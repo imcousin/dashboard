@@ -20,6 +20,7 @@ mongoose
 // DEFINED OBJECT
 const Item = require('./models/Item');
 const Player = require('./models/Player');
+const Game = require('./models/Game');
 
 // ROUTES
 app.get('/', async (req, res) => {
@@ -27,7 +28,8 @@ app.get('/', async (req, res) => {
   try {
     let items = await Item.find();
     let players = await Player.find();
-    res.render('index', { items, players });
+    let games = await Game.find();
+    res.render('index', { items, players, games });
   } catch (error) {
     console.log(error);
   }
@@ -41,12 +43,20 @@ app.get('/', async (req, res) => {
 });
 
 // ROUTES
+app.get('/games', (req, res) => {    
+  Game.find()
+    .then(games => res.render('index', { games }))
+    .catch(err => res.status(404).json({ msg: 'No games found' }));
+});
+
 app.get('/players', (req, res) => {    
   Player.find()
     .then(players => res.render('index', { players }))
     .catch(err => res.status(404).json({ msg: 'No players found' }));
 });
 
+
+// Creat
 app.post('/item/add', (req, res) => {
   const newItem = new Item({
     name: req.body.name
@@ -62,6 +72,15 @@ app.post('/player/add', (req, res) => {
   });
 
   newPlayer.save().then(player => res.redirect('/'));
+});
+
+app.post('/game/add', (req, res) => {
+  const newGame = new Game({
+    player: req.body.player,
+    score: req.body.score
+  });
+
+  newGame.save().then(game => res.redirect('/'));
 });
 
 const port = 3000;
