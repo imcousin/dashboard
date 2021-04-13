@@ -14,22 +14,32 @@
     <label for="team1">team1</label>
 
     <label for="player1">player1</label>
-    <input id="email1" type="email" name="player">
+    <input id="email1" type="email" name="email1">
+    <label for="player2">player2</label>
+    <input id="email2" type="email" name="email2">
     <label for="score1">score1</label>
-    <input type="number" name="score" min=0 max=50 value=21>
-
+    <input type="number" name="score1" min=0 max=50 value=21>
 
     <br />
+
+    <label for="team1">team2</label>
+
+    <label for="player3">player3</label>
+    <input id="email3" type="email" name="email3">
+    <label for="player4">player4</label>
+    <input id="email4" type="email" name="email4">
+    <label for="score2">score2</label>
+    <input type="number" name="score2" min=0 max=50 value=10>
+
 
 
     <input type="submit" value="Add">
   </form>
-  <h4>Players:</h4>
+  <h4>Games:</h4>
   <ul>
     <% games.forEach(function(game) { %>
       <li>
-        <%= game.player %>
-        <%= game.score %>
+        <%= $(game.teams).first() %>
         <%= game.date.toLocaleString("en-US", {timeZone: "America/Vancouver"}) %>
       </li>
     <% }); %>
@@ -54,6 +64,7 @@
       return strEmail; 
     }
     document.getElementById("email1").value = makeEmail();
+    document.getElementById("email3").value = makeEmail();
   </script>
 </body>
 </html>

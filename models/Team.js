@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const playerSchema = mongoose.model('Player', PlayerSchema);
+const playerSchema = require('../models/player.js');
 
 const TeamSchema = new Schema({
-  id: {
-    type: Number,
-    required: true
+  players: {
+    type: [ playerSchema ]
   },
-  players: [playerSchema],
+  score: {
+    type: Number,
+    required: 'Score is required',
+  },
   date: {
     type: Date,
     default: Date.now

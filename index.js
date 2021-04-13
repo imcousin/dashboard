@@ -18,66 +18,77 @@ mongoose
 
 
 // DEFINED OBJECT
-const Item = require('./models/Item');
-const Player = require('./models/Player');
+// const Item = require('./models/Item');
+// const Player = require('./models/Player');
 const Game = require('./models/Game');
+// const Team = require('./models/Team');
+
+
+var g = new Game({
+  teams: [
+    {players: ['a@a.com','b@b.com'],score: 21},
+    {players: ['c@c.com'],score: 10}
+  ]});
+
 
 // ROUTES
 app.get('/', async (req, res) => {
   // assign page variables
   try {
-    let items = await Item.find();
-    let players = await Player.find();
+    // PAGE TITLE
+    module.exports = pageTitleIndex = 'Modest Grass Leaderboard';
+
+    // let items = await Item.find();
+    // let players = await Player.find();
     let games = await Game.find();
-    res.render('index', { items, players, games });
+    // let teams = await Team.find();
+    // let scores = await Score.find();
+  
+    res.render('index', {  games });
   } catch (error) {
     console.log(error);
   }
-  // Item.find()
-  //   .then(items => res.render('index', { items }))
-  //   .catch(err => res.status(404).json({ msg: 'No items found' }));
-    
   // Player.find()
   //   .then(players => res.render('index', { players }))
   //   .catch(err => res.status(404).json({ msg: 'No players found' }));
 });
 
 // ROUTES
-app.get('/games', (req, res) => {    
-  Game.find()
-    .then(games => res.render('index', { games }))
-    .catch(err => res.status(404).json({ msg: 'No games found' }));
+// app.get('/games', (req, res) => {    
+//   Game.find()
+//     .then(games => res.render('index', { games }))
+//     .catch(err => res.status(404).json({ msg: 'No games found' }));
+// });
+
+app.get('/player', (req, res) => {   
+  // PAGE TITLE
+  module.exports = pageTitleIndex = 'Player Stats';
+
+  res.render('player');
+  // Player.find()
+  //   .then(players => res.render('index', { players }))
+  //   .catch(err => res.status(404).json({ msg: 'No players found' }));
 });
 
-app.get('/players', (req, res) => {    
-  Player.find()
-    .then(players => res.render('index', { players }))
-    .catch(err => res.status(404).json({ msg: 'No players found' }));
-});
 
-
-// Creat
-app.post('/item/add', (req, res) => {
-  const newItem = new Item({
-    name: req.body.name
-  });
-
-  newItem.save().then(item => res.redirect('/'));
-});
-
-app.post('/player/add', (req, res) => {
-  const newPlayer = new Player({
-    name: req.body.name,
-    email: req.body.email
-  });
-
-  newPlayer.save().then(player => res.redirect('/'));
-});
-
+// Create
 app.post('/game/add', (req, res) => {
+  console.log(`game add: `, req.body);
+  let team1 = [{ email: req.body.email1 }];
+  let team2 = [{ email: req.body.email3 }];
+  if (req.body.email2 != '') {
+    team1.push({ email: req.body.email2 })
+  }
+  if (req.body.email4 != '') {
+    team1.push({ email: req.body.email4 })
+  }
   const newGame = new Game({
-    player: req.body.player,
-    score: req.body.score
+    teams: [
+      { players: team1, 
+        score: req.body.score1 },
+      { players: team2, 
+        score: req.body.score2 }
+    ]
   });
 
   newGame.save().then(game => res.redirect('/'));
@@ -86,6 +97,3 @@ app.post('/game/add', (req, res) => {
 const port = 3000;
 
 app.listen(port, () => console.log('Server running...'));
-
-// PAGE TITLE
-module.exports = pageTitleIndex = 'Modest Grass Leaderboard'
