@@ -21,14 +21,26 @@ mongoose
 // const Item = require('./models/Item');
 // const Player = require('./models/Player');
 const Game = require('./models/Game');
+const Rank = require('./models/Rank');
 // const Team = require('./models/Team');
 
 
-var g = new Game({
-  teams: [
-    {players: ['a@a.com','b@b.com'],score: 21},
-    {players: ['c@c.com'],score: 10}
-  ]});
+// var g = new Game({
+//   teams: [
+//     {players: ['a@a.com','b@b.com'],score: 21},
+//     {players: ['c@c.com'],score: 10}
+//   ]});
+
+var r = new Rank({
+  rankings: [
+    { rank: 1,
+      player: 'Al Liao', 
+      points: 2552 },
+    { rank: 2,
+      player: 'Caleb Chan', 
+      points: 2233 }
+  ]
+});
 
 
 // ROUTES
@@ -41,10 +53,11 @@ app.get('/', async (req, res) => {
     // let items = await Item.find();
     // let players = await Player.find();
     let games = await Game.find();
+    let ranks = await Rank.find();
     // let teams = await Team.find();
     // let scores = await Score.find();
   
-    res.render('index', {  games });
+    res.render('index', { games, ranks });
   } catch (error) {
     console.log(error);
   }
@@ -74,24 +87,36 @@ app.get('/player', (req, res) => {
 // Create
 app.post('/game/add', (req, res) => {
   console.log(`game add: `, req.body);
-  let team1 = [{ email: req.body.email1 }];
-  let team2 = [{ email: req.body.email3 }];
-  if (req.body.email2 != '') {
-    team1.push({ email: req.body.email2 })
-  }
-  if (req.body.email4 != '') {
-    team1.push({ email: req.body.email4 })
-  }
-  const newGame = new Game({
-    teams: [
-      { players: team1, 
-        score: req.body.score1 },
-      { players: team2, 
-        score: req.body.score2 }
+  // let team1 = [{ email: req.body.email1 }];
+  // let team2 = [{ email: req.body.email3 }];
+  // if (req.body.email2 != '') {
+  //   team1.push({ email: req.body.email2 })
+  // }
+  // if (req.body.email4 != '') {
+  //   team1.push({ email: req.body.email4 })
+  // }
+  // const newGame = new Game({
+  //   teams: [
+  //     { players: team1, 
+  //       score: req.body.score1 },
+  //     { players: team2, 
+  //       score: req.body.score2 }
+  //   ]
+  // });
+
+  // newGame.save().then(game => res.redirect('/'));
+
+  const newRank = new Rank({
+    rankings: [
+      { rank: 1,
+        player: 'Al Liao', 
+        points: 2552 },
+      { rank: 2,
+        player: 'Caleb Chan', 
+        points: 2233 }
     ]
   });
-
-  newGame.save().then(game => res.redirect('/'));
+  newRank.save().then(ranks => res.redirect('/'));
 });
 
 const port = 3000;

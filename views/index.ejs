@@ -44,6 +44,16 @@
       </li>
     <% }); %>
   </ul>
+  <h4>ranking:</h4>
+  <ul>
+    <%= console.log(JSON.stringify(ranks)) %>
+    <% ranks.forEach(function(ranking) { %>
+      <li>
+        <%= console.log(JSON.stringify(ranking)) %>
+        <%= $(ranking.ranks).first() %>
+        <%= ranking.date.toLocaleString("en-US", {timeZone: "America/Vancouver"}) %>
+      </li>
+    <% }); %>
   
   <script>
     function makeEmail() { 
